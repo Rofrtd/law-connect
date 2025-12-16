@@ -2,26 +2,14 @@ import { nanoid } from "nanoid";
 import { eq } from "drizzle-orm";
 import { prompts, records } from "@/db/schema";
 import type { RegenerateResult } from "./types";
-
-type Db = {
-  insert: any;
-  delete: any;
-  select: any;
-};
+import type { DB } from "@/db";
 
 export async function regenerateFromPrompt(
-  db: Db,
+  db: DB,
   promptText: string
 ): Promise<RegenerateResult> {
   const promptId = nanoid();
 
-  // delete all existing records + prompts (single-user)
-  await db.delete(records);
-  await db.delete(prompts);
-
-  await db.insert(prompts).values({ id: promptId, text: promptText });
-
-  // deterministic “LLM output” for now
   const newRecords = [
     {
       id: nanoid(),
@@ -32,21 +20,23 @@ export async function regenerateFromPrompt(
     },
   ];
 
-  await db.insert(records).values(
-    newRecords.map((r) => ({
-      id: r.id,
-      promptId: r.promptId,
-      title: r.title,
-      body: r.body,
-      order: r.order,
-    }))
-  );
+  db.transaction((tx) => {
+    // single-user: wipe previous data
+    tx.delete(records).run();
+    tx.delete(prompts).run();
 
-  const inserted = await db
+    tx.insert(prompts).values({ id: promptId, text: promptText }).run();
+
+    // no mapping needed if object shape matches schema columns
+    tx.insert(records).values(newRecords).run();
+  });
+
+  const inserted = db
     .select()
     .from(records)
     .where(eq(records.promptId, promptId))
-    .orderBy(records.order);
+    .orderBy(records.order)
+    .all();
 
   return {
     promptId,
