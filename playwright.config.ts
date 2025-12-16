@@ -3,7 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "./e2e",
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL: "http://localhost:3001",
     trace: "on-first-retry",
   },
   projects: [
@@ -13,12 +13,12 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run dev",
-    url: "http://localhost:3000",
+    command: "npm run build && npm run start -- --port 3001",
+    url: "http://localhost:3001",
     reuseExistingServer: !process.env.CI,
     env: {
-      ...process.env,
       SQLITE_PATH: "db.e2e.sqlite",
+      LLM_MODE: "fake",
     },
   },
 });

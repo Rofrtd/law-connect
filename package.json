@@ -7,14 +7,14 @@
   },
   "scripts": {
     "db:migrate": "tsx scripts/db-migrate.ts",
-    "dev": "next dev",
+    "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "e2e": "SQLITE_PATH=db.e2e.sqlite npm run db:migrate && SQLITE_PATH=db.e2e.sqlite playwright test",
+    "e2e": "LLM_MODE=fake SQLITE_PATH=db.e2e.sqlite npm run db:migrate && SQLITE_PATH=db.e2e.sqlite playwright test",
     "e2e:ui": "playwright test --ui"
   },
   "dependencies": {
