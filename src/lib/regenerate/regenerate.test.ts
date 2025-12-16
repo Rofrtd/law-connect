@@ -14,21 +14,6 @@ describe("regenerateFromPrompt", () => {
   it("replaces existing records when regenerating", async () => {
     const { db, sqlite } = createDb(":memory:");
 
-    sqlite.exec(`
-      CREATE TABLE prompts (
-        id TEXT PRIMARY KEY,
-        text TEXT NOT NULL
-      );
-
-      CREATE TABLE records (
-        id TEXT PRIMARY KEY,
-        prompt_id TEXT NOT NULL,
-        title TEXT,
-        body TEXT NOT NULL,
-        "order" INTEGER NOT NULL
-      );
-    `);
-
     const first = await regenerateFromPrompt(db, fakeLlm, "first prompt");
     const second = await regenerateFromPrompt(db, fakeLlm, "second prompt");
 
