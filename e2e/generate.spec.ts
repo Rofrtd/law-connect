@@ -16,12 +16,12 @@ test("delete: removes a record from the list", async ({ page }) => {
   await page.getByRole("textbox", { name: /prompt/i }).fill("to delete");
   await page.getByRole("button", { name: /generate/i }).click();
 
-  const record = page.getByText("From: to delete");
-  await expect(record).toBeVisible();
+  const card = page.locator("article", { hasText: "From: to delete" });
+  await expect(card).toBeVisible();
 
-  // delete it
-  await page.getByRole("button", { name: /delete/i }).click();
+  // delete that specific record
+  await card.getByRole("button", { name: /delete/i }).click();
 
-  // record should be gone
-  await expect(record).not.toBeVisible();
+  // record card should be gone
+  await expect(card).toBeHidden();
 });
