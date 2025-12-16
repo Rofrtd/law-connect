@@ -2,7 +2,11 @@
   "name": "lawconnect-llm-tool",
   "version": "0.1.0",
   "private": true,
+  "overrides": {
+    "vite": "^6.0.0"
+  },
   "scripts": {
+    "db:migrate": "tsx src/db/run-migrate.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -10,7 +14,7 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "e2e": "playwright test",
+    "e2e": "npm run db:migrate && playwright test",
     "e2e:ui": "playwright test --ui"
   },
   "dependencies": {
@@ -31,12 +35,15 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitest/coverage-v8": "^4.0.15",
+    "@vitest/ui": "^4.0.15",
     "drizzle-kit": "^0.31.8",
     "eslint": "^9",
     "eslint-config-next": "16.0.10",
     "jsdom": "^26.1.0",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5",
+    "vite": "^6.0.0",
     "vitest": "^4.0.15"
   }
 }
