@@ -45,3 +45,7 @@ db.sqlite
 db.sqlite-journal
 db.e2e.sqlite
 db.e2e.sqlite-journal
+
+
+#testing files
+/test-results

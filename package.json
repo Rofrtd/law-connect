@@ -6,7 +6,7 @@
     "vite": "^6.0.0"
   },
   "scripts": {
-    "db:migrate": "tsx src/db/run-migrate.ts",
+    "db:migrate": "tsx scripts/db-migrate.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

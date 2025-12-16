@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { regenerateAction } from "@/app/regenerateAction";
+import { regenerateAction } from "@/app/_actions/regenerateAction";
 
 export default function GenerateForm() {
   const [prompt, setPrompt] = useState("");

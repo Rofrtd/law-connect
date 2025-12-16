@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
-import { deleteRecordById } from "@/lib/records/deleteRecord";
+import { deleteRecordById } from "@/domain/records/deleteRecord";
 
 export async function deleteRecordAction(formData: FormData) {
   const id = String(formData.get("id") ?? "").trim();

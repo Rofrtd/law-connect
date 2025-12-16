@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { prompts, records } from "@/db/schema";
 import type { RegenerateResult } from "./types";
 import type { DB } from "@/db";
-import { LlmClient } from "../llm/port";
+import { LlmClient } from "../llm/contracts";
 
 export async function regenerateFromPrompt(
   db: DB,

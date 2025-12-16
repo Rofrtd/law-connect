@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { createDb } from "@/db/client";
 import { regenerateFromPrompt } from "./regenerate";
 
-import type { LlmClient } from "@/lib/llm/port";
+import type { LlmClient } from "@/domain/llm/contracts";
 
 const fakeLlm: LlmClient = {
   async generateRecords(promptText: string) {

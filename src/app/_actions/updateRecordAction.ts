@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
-import { updateRecordById } from "@/lib/records/updateRecord";
+import { updateRecordById } from "@/domain/records/updateRecord";
 
 export async function updateRecordAction(formData: FormData) {
   const id = String(formData.get("id") ?? "").trim();

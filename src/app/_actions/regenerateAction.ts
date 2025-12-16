@@ -1,8 +1,8 @@
 "use server";
 
 import { db } from "@/db";
-import { getLlmClient } from "@/lib/llm/getLlmClient";
-import { regenerateFromPrompt } from "@/lib/regenerate/regenerate";
+import { getLlmClient } from "@/domain/llm/getLlmClient";
+import { regenerateFromPrompt } from "@/domain/regenerate/regenerate";
 import { revalidatePath } from "next/cache";
 
 export async function regenerateAction(formData: FormData) {

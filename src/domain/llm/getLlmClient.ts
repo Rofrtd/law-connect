@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import type { LlmClient } from "./port";
+import type { LlmClient } from "./contracts";
 import { OpenAiLlmClient } from "./openAiClient";
 
 // keep tests/e2e deterministic

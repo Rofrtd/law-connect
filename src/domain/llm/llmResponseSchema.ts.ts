@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const LlmRecordsSchema = z.object({
+export const LlmResponseSchema = z.object({
   records: z.array(
     z.object({
       title: z.string().nullable().optional(),
@@ -9,4 +9,4 @@ export const LlmRecordsSchema = z.object({
   ),
 });
 
-export type LlmParsed = z.infer<typeof LlmRecordsSchema>;
+export type LlmParsed = z.infer<typeof LlmResponseSchema>;

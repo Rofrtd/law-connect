@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { updateRecordAction } from "@/app/updateRecordAction";
-import { deleteRecordAction } from "@/app/deleteRecordAction";
+import { updateRecordAction } from "@/app/_actions/updateRecordAction";
+import { deleteRecordAction } from "@/app/_actions/deleteRecordAction";
 
 type Props = {
   id: string;

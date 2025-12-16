@@ -1,4 +1,4 @@
-import { LlmRecordsSchema } from "./schema";
+import { LlmResponseSchema } from "./llmResponseSchema.ts";
 
 export class LlmParseError extends Error {
   constructor(message: string) {
@@ -17,7 +17,7 @@ export function parseLlmJson(raw: string) {
     throw new LlmParseError("LLM output was not valid JSON");
   }
 
-  const result = LlmRecordsSchema.safeParse(json);
+  const result = LlmResponseSchema.safeParse(json);
   if (!result.success) {
     throw new LlmParseError("LLM JSON did not match expected shape");
   }
