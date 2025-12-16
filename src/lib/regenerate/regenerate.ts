@@ -3,22 +3,24 @@ import { eq } from "drizzle-orm";
 import { prompts, records } from "@/db/schema";
 import type { RegenerateResult } from "./types";
 import type { DB } from "@/db";
+import { LlmClient } from "../llm/port";
 
 export async function regenerateFromPrompt(
   db: DB,
+  llm: LlmClient,
   promptText: string
 ): Promise<RegenerateResult> {
   const promptId = nanoid();
 
-  const newRecords = [
-    {
-      id: nanoid(),
-      promptId,
-      title: "Generated",
-      body: `From: ${promptText}`,
-      order: 0,
-    },
-  ];
+  const generated = await llm.generateRecords(promptText);
+
+  const newRecords = generated.map((r, index) => ({
+    id: nanoid(),
+    promptId,
+    title: r.title,
+    body: r.body,
+    order: index,
+  }));
 
   db.transaction((tx) => {
     // single-user: wipe previous data
