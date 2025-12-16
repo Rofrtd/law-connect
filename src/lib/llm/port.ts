@@ -1,5 +1,8 @@
-export type LlmRecordInput = { title: string | null; body: string };
+export type GeneratedRecord = {
+  title: string | null;
+  body: string;
+};
 
 export interface LlmClient {
-  generateRecords(promptText: string): Promise<LlmRecordInput[]>;
+  generateRecords(promptText: string): Promise<GeneratedRecord[]>;
 }
