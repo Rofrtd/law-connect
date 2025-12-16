@@ -8,9 +8,6 @@ describe("deleteRecordById", () => {
   it("deletes a record by id", () => {
     const { db, sqlite } = createDb(":memory:");
 
-    // setup schema (if your createDb already migrates, great; if not, call initDb for tests)
-    // If you already have a helper in tests that runs migrations, reuse it.
-
     const promptId = nanoid();
     db.insert(prompts).values({ id: promptId, text: "p" }).run();
 
