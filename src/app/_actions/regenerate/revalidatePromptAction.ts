@@ -27,7 +27,7 @@ export async function revalidatePrompt(formData: FormData) {
 
   // Update the prompt text and delete old records, then insert new ones
 
-  overridePromptRecords(promptId, promptText, newRecords);
+  overridePromptRecords(promptText, promptId, newRecords);
 
   revalidatePath("/");
 }
