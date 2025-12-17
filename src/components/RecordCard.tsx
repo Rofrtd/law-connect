@@ -33,7 +33,9 @@ type Props = {
 export default function RecordCard({ id, title, body }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [isDeleting, startDeleteTransition] = useTransition();
 
   return (
     <article>
@@ -130,14 +132,38 @@ export default function RecordCard({ id, title, body }: Props) {
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel className="border-zinc-700 hover:bg-zinc-800">
+                  {deleteError && (
+                    <div className="text-sm text-red-400 bg-red-950/50 border border-red-900 rounded-md p-3 mb-4">
+                      {deleteError}
+                    </div>
+                  )}
+                  <AlertDialogCancel
+                    className="border-zinc-700 hover:bg-zinc-800"
+                    disabled={isDeleting}
+                    onClick={() => setDeleteError(null)}
+                  >
                     Cancel
                   </AlertDialogCancel>
-                  <form action={deleteRecordAction}>
+                  <form
+                    action={async (formData: FormData) => {
+                      setDeleteError(null);
+                      startDeleteTransition(async () => {
+                        const result = await deleteRecordAction(formData);
+                        if (!result.success) {
+                          setDeleteError(result.error);
+                        }
+                        // If successful, the page will revalidate and component will unmount
+                      });
+                    }}
+                  >
                     <input type="hidden" name="id" value={id} />
                     <AlertDialogAction asChild>
-                      <Button type="submit" variant="destructive">
-                        Delete Record
+                      <Button
+                        type="submit"
+                        variant="destructive"
+                        disabled={isDeleting}
+                      >
+                        {isDeleting ? "Deleting..." : "Delete Record"}
                       </Button>
                     </AlertDialogAction>
                   </form>
