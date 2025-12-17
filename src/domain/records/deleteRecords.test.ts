@@ -9,7 +9,9 @@ describe("deleteRecordById", () => {
     const { db, sqlite } = createDb(":memory:");
 
     const promptId = nanoid();
-    db.insert(prompts).values({ id: promptId, text: "p" }).run();
+    db.insert(prompts)
+      .values({ id: promptId, text: "p", createdAt: new Date() })
+      .run();
 
     const id = nanoid();
     db.insert(records)

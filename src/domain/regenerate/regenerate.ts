@@ -27,7 +27,9 @@ export async function regenerateFromPrompt(
     tx.delete(records).run();
     tx.delete(prompts).run();
 
-    tx.insert(prompts).values({ id: promptId, text: promptText }).run();
+    tx.insert(prompts)
+      .values({ id: promptId, text: promptText, createdAt: new Date() })
+      .run();
 
     // no mapping needed if object shape matches schema columns
     tx.insert(records).values(newRecords).run();

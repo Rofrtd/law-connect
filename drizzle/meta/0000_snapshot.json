@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "a1515632-9226-41eb-8089-302949a6e4e9",
+  "id": "208f1492-68d4-47c8-b30f-065f16e9b871",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "prompts": {
@@ -17,6 +17,13 @@
         "text": {
           "name": "text",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -68,7 +75,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "records_prompt_id_prompts_id_fk": {
+          "name": "records_prompt_id_prompts_id_fk",
+          "tableFrom": "records",
+          "tableTo": "prompts",
+          "columnsFrom": [
+            "prompt_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}

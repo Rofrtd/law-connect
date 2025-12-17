@@ -2,9 +2,6 @@ import { db } from "@/db";
 import { records } from "@/db/schema";
 import GenerateForm from "@/components/GenerateForm";
 import RecordCard from "@/components/RecordCard";
-import { ensureSchema } from "@/db/ensureSchema";
-
-ensureSchema();
 
 export default async function Page() {
   const allRecords = db.select().from(records).orderBy(records.order).all();
