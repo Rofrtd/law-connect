@@ -118,6 +118,11 @@ export default function RecordCard({ id, title, body }: Props) {
         </CardContent>
         {!isEditing && (
           <CardFooter className="flex gap-3 pt-4 border-t border-zinc-800">
+            {deleteError && (
+              <div className="text-sm text-red-400 bg-red-950/50 border border-red-900 rounded-md p-3 mb-4">
+                {deleteError}
+              </div>
+            )}
             <Button
               type="button"
               variant="outline"
@@ -144,11 +149,6 @@ export default function RecordCard({ id, title, body }: Props) {
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  {deleteError && (
-                    <div className="text-sm text-red-400 bg-red-950/50 border border-red-900 rounded-md p-3 mb-4">
-                      {deleteError}
-                    </div>
-                  )}
                   <AlertDialogCancel
                     className="border-zinc-700 hover:bg-zinc-800"
                     disabled={isDeleting}

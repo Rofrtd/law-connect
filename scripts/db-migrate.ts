@@ -5,7 +5,6 @@ import path from "node:path";
 let initialized = false;
 
 ensureSchema();
-console.log("Migrations applied");
 
 function ensureSchema() {
   if (initialized) return;
