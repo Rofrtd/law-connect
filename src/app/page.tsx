@@ -1,24 +1,13 @@
-import { db } from "@/db";
-import { prompts, records } from "@/db/schema";
-import { eq } from "drizzle-orm";
 import GenerateForm from "@/components/GenerateForm";
 import PromptGroup from "@/components/PromptGroup";
+import { getPrompts } from "@/domain/prompts/getPrompts";
+import { getRecords } from "@/domain/records/getRecords";
 
 export default async function Page() {
-  const allPrompts = db
-    .select()
-    .from(prompts)
-    .orderBy(prompts.createdAt)
-    .all()
-    .reverse();
+  const allPrompts = getPrompts();
 
   const promptsWithRecords = allPrompts.map((prompt) => {
-    const promptRecords = db
-      .select()
-      .from(records)
-      .where(eq(records.promptId, prompt.id))
-      .orderBy(records.order)
-      .all();
+    const promptRecords = getRecords(prompt.id);
 
     return {
       prompt,
