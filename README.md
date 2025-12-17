@@ -1,6 +1,6 @@
 # LawConnect LLM Tool
 
-A Next.js application for generating and managing legal documents with AI assistance.
+A lightweight full-stack Next.js application for exploring, refining, and managing LLM-generated structured content from natural-language prompts.
 
 ## Table of Contents
 
@@ -23,6 +23,9 @@ A Next.js application for generating and managing legal documents with AI assist
 ```bash
 # Install dependencies
 npm install
+
+# Create .env file
+cp .env.example .env
 
 # Run database migrations
 npm run db:migrate
