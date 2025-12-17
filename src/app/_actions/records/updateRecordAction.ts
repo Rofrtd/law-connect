@@ -3,17 +3,36 @@
 import { revalidatePath } from "next/cache";
 import { updateRecordById } from "@/domain/records/updateRecord";
 
-export async function updateRecordAction(formData: FormData) {
-  const id = String(formData.get("id") ?? "").trim();
-  const body = String(formData.get("body") ?? "").trim();
-  const title = String(formData.get("title") ?? "").trim();
+type UpdateRecordResult = { success: true } | { success: false; error: string };
 
-  if (!id) throw new Error("Record id is required");
+export async function updateRecordAction(
+  formData: FormData
+): Promise<UpdateRecordResult> {
+  try {
+    const id = String(formData.get("id") ?? "").trim();
+    const body = String(formData.get("body") ?? "").trim();
+    const title = String(formData.get("title") ?? "").trim();
 
-  updateRecordById(id, {
-    ...(title ? { title } : {}),
-    ...(body ? { body } : {}),
-  });
+    if (!id) {
+      return { success: false, error: "Record ID is required" };
+    }
 
-  revalidatePath("/");
+    if (!body) {
+      return { success: false, error: "Body cannot be empty" };
+    }
+
+    await updateRecordById(id, {
+      ...(title ? { title } : {}),
+      body,
+    });
+
+    revalidatePath("/");
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to update record:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to update record",
+    };
+  }
 }

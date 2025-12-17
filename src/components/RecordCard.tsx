@@ -2,7 +2,7 @@
 
 import { deleteRecordAction } from "@/app/_actions/records/deleteRecordAction";
 import { updateRecordAction } from "@/app/_actions/records/updateRecordAction";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import {
   Card,
   CardContent,
@@ -32,6 +32,8 @@ type Props = {
 
 export default function RecordCard({ id, title, body }: Props) {
   const [isEditing, setIsEditing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   return (
     <article>
@@ -48,9 +50,18 @@ export default function RecordCard({ id, title, body }: Props) {
             </p>
           ) : (
             <form
-              action={updateRecordAction}
+              action={async (formData: FormData) => {
+                setError(null);
+                startTransition(async () => {
+                  const result = await updateRecordAction(formData);
+                  if (result.success) {
+                    setIsEditing(false);
+                  } else {
+                    setError(result.error);
+                  }
+                });
+              }}
               className="space-y-4"
-              onSubmit={() => setIsEditing(false)}
             >
               <input type="hidden" name="id" value={id} />
               <input type="hidden" name="title" value={title ?? ""} />
@@ -59,16 +70,31 @@ export default function RecordCard({ id, title, body }: Props) {
                 aria-label="Body"
                 className="min-h-32 bg-zinc-800/50 border-zinc-700 text-zinc-100 focus-visible:border-zinc-600 focus-visible:ring-zinc-600/50 placeholder:text-zinc-500"
                 defaultValue={body}
+                disabled={isPending}
               />
+              {error && (
+                <div className="text-sm text-red-400 bg-red-950/50 border border-red-900 rounded-md p-3">
+                  {error}
+                </div>
+              )}
               <div className="flex gap-3">
-                <Button type="submit" variant="default" className="flex-1">
-                  Save Changes
+                <Button
+                  type="submit"
+                  variant="default"
+                  className="flex-1"
+                  disabled={isPending}
+                >
+                  {isPending ? "Saving..." : "Save Changes"}
                 </Button>
                 <Button
                   type="button"
                   variant="outline"
                   className="flex-1"
-                  onClick={() => setIsEditing(false)}
+                  onClick={() => {
+                    setIsEditing(false);
+                    setError(null);
+                  }}
+                  disabled={isPending}
                 >
                   Cancel
                 </Button>
