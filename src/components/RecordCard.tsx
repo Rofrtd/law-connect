@@ -12,6 +12,7 @@ import {
 } from "./ui/card";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
+import { Input } from "./ui/input";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,16 +41,20 @@ export default function RecordCard({ id, title, body }: Props) {
   return (
     <article>
       <Card className="bg-zinc-900 border-zinc-800 shadow-xl hover:shadow-2xl transition-shadow">
-        {title && (
-          <CardHeader className="pb-3">
-            <CardTitle className="text-xl text-zinc-100">{title}</CardTitle>
-          </CardHeader>
-        )}
         <CardContent className="pt-0">
           {!isEditing ? (
-            <p className="text-zinc-300 leading-relaxed whitespace-pre-wrap">
-              {body}
-            </p>
+            <>
+              {title && (
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-xl text-zinc-100">
+                    {title}
+                  </CardTitle>
+                </CardHeader>
+              )}
+              <p className="text-zinc-300 leading-relaxed whitespace-pre-wrap">
+                {body}
+              </p>
+            </>
           ) : (
             <form
               action={async (formData: FormData) => {
@@ -66,7 +71,14 @@ export default function RecordCard({ id, title, body }: Props) {
               className="space-y-4"
             >
               <input type="hidden" name="id" value={id} />
-              <input type="hidden" name="title" value={title ?? ""} />
+              <Input
+                name="title"
+                aria-label="Title"
+                placeholder="Title (optional)"
+                className="bg-zinc-800/50 border-zinc-700 text-zinc-100 focus-visible:border-zinc-600 focus-visible:ring-zinc-600/50 placeholder:text-zinc-500"
+                defaultValue={title ?? ""}
+                disabled={isPending}
+              />
               <Textarea
                 name="body"
                 aria-label="Body"
@@ -152,7 +164,6 @@ export default function RecordCard({ id, title, body }: Props) {
                         if (!result.success) {
                           setDeleteError(result.error);
                         }
-                        // If successful, the page will revalidate and component will unmount
                       });
                     }}
                   >
