@@ -27,6 +27,9 @@ npm install
 # Create .env file
 cp .env.example .env
 
+# Add your OpenAI API key to .env
+# OPENAI_API_KEY=your_api_key_here
+
 # Run database migrations
 npm run db:migrate
 
