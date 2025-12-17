@@ -1,13 +1,11 @@
-import { describe, it, expect } from "vitest";
-import { createDb } from "@/db/client";
+import { describe, it, expect, vi } from "vitest";
 import { records, prompts } from "@/db/schema";
 import { nanoid } from "nanoid";
 import { deleteRecordById } from "./deleteRecord";
+import { db, sqlite } from "@/db";
 
 describe("deleteRecordById", () => {
   it("deletes a record by id", () => {
-    const { db, sqlite } = createDb(":memory:");
-
     const promptId = nanoid();
     db.insert(prompts)
       .values({ id: promptId, text: "p", createdAt: new Date() })
@@ -18,7 +16,7 @@ describe("deleteRecordById", () => {
       .values({ id, promptId, title: "t", body: "b", order: 0 })
       .run();
 
-    deleteRecordById(db, id);
+    deleteRecordById(id);
 
     const remaining = db.select().from(records).all();
     expect(remaining).toHaveLength(0);

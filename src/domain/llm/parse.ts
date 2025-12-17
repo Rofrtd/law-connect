@@ -8,7 +8,6 @@ export class LlmParseError extends Error {
 }
 
 export function parseLlmJson(raw: string) {
-  console.log("Raw LLM output:", raw);
   let json: unknown;
 
   try {

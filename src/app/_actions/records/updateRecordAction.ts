@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { db } from "@/db";
 import { updateRecordById } from "@/domain/records/updateRecord";
 
 export async function updateRecordAction(formData: FormData) {
@@ -11,7 +10,7 @@ export async function updateRecordAction(formData: FormData) {
 
   if (!id) throw new Error("Record id is required");
 
-  updateRecordById(db, id, {
+  updateRecordById(id, {
     ...(title ? { title } : {}),
     ...(body ? { body } : {}),
   });

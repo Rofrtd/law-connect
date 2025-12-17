@@ -1,6 +1,4 @@
 "use server";
-
-import { db } from "@/db";
 import { getLlmClient } from "@/domain/llm/getLlmClient";
 import { regenerateFromPrompt } from "@/domain/regenerate/regenerate";
 import { revalidatePath } from "next/cache";
@@ -11,6 +9,6 @@ export async function regenerateAction(formData: FormData) {
 
   const llm = getLlmClient();
 
-  await regenerateFromPrompt(db, llm, promptText);
+  await regenerateFromPrompt(llm, promptText);
   revalidatePath("/");
 }

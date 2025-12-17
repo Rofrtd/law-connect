@@ -2,11 +2,10 @@ import { nanoid } from "nanoid";
 import { eq } from "drizzle-orm";
 import { prompts, records } from "@/db/schema";
 import type { RegenerateResult } from "./types";
-import type { DB } from "@/db";
-import { LlmClient } from "../llm/contracts";
+import { LlmClient } from "../llm/interface";
+import { db } from "@/db";
 
 export async function regenerateFromPrompt(
-  db: DB,
   llm: LlmClient,
   promptText: string
 ): Promise<RegenerateResult> {
@@ -23,10 +22,6 @@ export async function regenerateFromPrompt(
   }));
 
   db.transaction((tx) => {
-    // single-user: wipe previous data
-    tx.delete(records).run();
-    tx.delete(prompts).run();
-
     tx.insert(prompts)
       .values({ id: promptId, text: promptText, createdAt: new Date() })
       .run();

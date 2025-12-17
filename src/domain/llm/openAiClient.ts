@@ -1,4 +1,4 @@
-import type { LlmClient } from "./contracts";
+import type { LlmClient } from "./interface";
 import { parseLlmJson } from "./parse";
 
 type OpenAiLlmClientDeps = {

@@ -1,5 +1,4 @@
 import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
-import { sql } from "drizzle-orm";
 
 export const prompts = sqliteTable("prompts", {
   id: text("id").primaryKey(),

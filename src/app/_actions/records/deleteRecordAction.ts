@@ -8,6 +8,6 @@ export async function deleteRecordAction(formData: FormData) {
   const id = String(formData.get("id") ?? "").trim();
   if (!id) throw new Error("Record id is required");
 
-  deleteRecordById(db, id);
+  deleteRecordById(id);
   revalidatePath("/");
 }

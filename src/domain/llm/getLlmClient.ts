@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import type { LlmClient } from "./contracts";
+import type { LlmClient } from "./interface";
 import { OpenAiLlmClient } from "./openAiClient";
 import { zodTextFormat } from "openai/helpers/zod.mjs";
 import { LlmResponseSchema } from "./llmResponseSchema.ts";

@@ -1,13 +1,33 @@
 import { db } from "@/db";
-import { records } from "@/db/schema";
+import { prompts, records } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import GenerateForm from "@/components/GenerateForm";
-import RecordCard from "@/components/RecordCard";
+import PromptGroup from "@/components/PromptGroup";
 
 export default async function Page() {
-  const allRecords = db.select().from(records).orderBy(records.order).all();
+  const allPrompts = db
+    .select()
+    .from(prompts)
+    .orderBy(prompts.createdAt)
+    .all()
+    .reverse();
+
+  const promptsWithRecords = allPrompts.map((prompt) => {
+    const promptRecords = db
+      .select()
+      .from(records)
+      .where(eq(records.promptId, prompt.id))
+      .orderBy(records.order)
+      .all();
+
+    return {
+      prompt,
+      records: promptRecords,
+    };
+  });
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-950">
+    <main className="min-h-screen bg-linear-to-b from-zinc-950 via-zinc-900 to-zinc-950">
       <div className="container mx-auto max-w-4xl px-4 py-8 space-y-8">
         <header className="space-y-2">
           <h1 className="text-4xl font-bold tracking-tight text-zinc-50">
@@ -22,18 +42,17 @@ export default async function Page() {
           <GenerateForm />
         </section>
 
-        {allRecords.length > 0 && (
+        {promptsWithRecords.length > 0 && (
           <section className="space-y-4">
             <h2 className="text-2xl font-semibold text-zinc-200">
-              Your Records
+              Your Prompts & Results
             </h2>
             <div className="space-y-4">
-              {allRecords.map((r) => (
-                <RecordCard
-                  key={r.id}
-                  id={r.id}
-                  title={r.title}
-                  body={r.body}
+              {promptsWithRecords.map(({ prompt, records: promptRecords }) => (
+                <PromptGroup
+                  key={prompt.id}
+                  prompt={prompt}
+                  records={promptRecords}
                 />
               ))}
             </div>

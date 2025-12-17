@@ -7,7 +7,6 @@ export function createDb(filename = process.env.SQLITE_PATH ?? "db.sqlite") {
   const sqlite = new Database(filename);
   const db = drizzle(sqlite);
 
-  // Ensure schema exists for tests/in-memory usage
   migrate(db, { migrationsFolder: path.join(process.cwd(), "drizzle") });
 
   return { db, sqlite };
