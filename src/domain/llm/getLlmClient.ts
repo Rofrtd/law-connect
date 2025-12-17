@@ -1,6 +1,8 @@
 import OpenAI from "openai";
 import type { LlmClient } from "./contracts";
 import { OpenAiLlmClient } from "./openAiClient";
+import { zodTextFormat } from "openai/helpers/zod.mjs";
+import { LlmResponseSchema } from "./llmResponseSchema.ts";
 
 // keep tests/e2e deterministic
 class FakeLlmClient implements LlmClient {
@@ -20,28 +22,12 @@ export function getLlmClient(): LlmClient {
 
   return new OpenAiLlmClient({
     fetchRaw: async (prompt) => {
-      const res = await openai.responses.create({
-        model: "gpt-4.1-mini",
-        input: [
-          {
-            role: "system",
-            content: [
-              {
-                type: "input_text",
-                text: 'Return ONLY valid JSON: {"records":[{"title":string|null,"body":string}]}',
-              },
-            ],
-          },
-          {
-            role: "user",
-            content: [
-              {
-                type: "input_text",
-                text: prompt,
-              },
-            ],
-          },
-        ],
+      const res = await openai.responses.parse({
+        model: "gpt-4o-mini",
+        input: prompt,
+        text: {
+          format: zodTextFormat(LlmResponseSchema, "event"),
+        },
       });
 
       const raw = res.output_text;
