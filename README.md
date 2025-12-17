@@ -50,6 +50,14 @@ npm run e2e          # Run end-to-end tests (port 3001)
 npm run db:migrate   # Run database migrations
 ```
 
+Alternatively, you can build and start using the following commands:
+
+```bash
+npm install
+npm run build
+npm run start
+```
+
 ## Architecture & Design
 
 ### Hexagonal Architecture (Ports & Adapters)

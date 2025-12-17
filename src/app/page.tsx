@@ -23,7 +23,8 @@ export default async function Page() {
             LawConnect LLM Tool
           </h1>
           <p className="text-zinc-400">
-            Generate and manage legal documents with AI
+            Enter a prompt to generate structured records you can edit, refine,
+            and regenerate.
           </p>
         </header>
 
